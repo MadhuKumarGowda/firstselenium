@@ -22,8 +22,11 @@ namespace firstselenium
             // Maximize the browser window
             driver.Manage().Window.Maximize();
             // Find the element
+            IWebElement webElement = driver.FindElement(By.Name("q"));
             // Type in the element
+            webElement.SendKeys("Madhu Kumar Gowda");
             // Click on the element
+            webElement.SendKeys(Keys.Return);
         }
     }
 }
