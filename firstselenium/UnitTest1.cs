@@ -84,7 +84,7 @@ namespace firstselenium
         }
 
 
-        [Test]
+        //[Test]
         public void WorkingWithAdvanceControls()
         {
             // Sudo code for setting up selenium
@@ -110,6 +110,41 @@ namespace firstselenium
             {
                 Console.WriteLine(option.Text);
             }
+
+        }
+
+        [Test]
+        public void workingwithCustomMethods()
+        {
+            // Sudo code for setting up selenium
+            // 1. Create a new instance of selenium web driver
+            IWebDriver driver = new ChromeDriver();
+            // 2. Maximize the chrome window
+            driver.Manage().Window.Maximize();
+            // 3. Navigate to the URL
+            driver.Navigate().GoToUrl("http:/eaapp.somee.com/");
+            // 4. Find the login link using custom method            
+            SeleniumCustomMethods.Click(driver, By.Id("loginLink"));
+            // 5. Find the username text box and enter user name by using cutom methods
+            SeleniumCustomMethods.EnterText(driver, By.Name("UserName"), "admin");           
+            // 6. Find the password text box and enter password by using cutom methods
+            SeleniumCustomMethods.EnterText(driver, By.Id("Password"), "password");            
+            // 7. identify login button
+            driver.FindElement(By.ClassName("btn")).Submit();
+
+        }
+
+        [Test]
+        public void advanceMethodswithCustom()
+        {
+            // Sudo code for setting up selenium
+            // 1. Create a new instance of selenium web driver
+            IWebDriver driver = new ChromeDriver();
+            // Select dropdown by text using custom methods
+            SeleniumCustomMethods.SelectDropDownByText(driver, By.Id("dropdown"), "Option 2");
+            string []multiOptions = { "multi 1", "multi 2" };
+            SeleniumCustomMethods.MultiSelectElements(driver, By.Id("dropdown"), multiOptions);
+            var selectedOptions = SeleniumCustomMethods.GetAllSelectedListItems(driver, By.Id("dropdown"));
 
         }
     }
