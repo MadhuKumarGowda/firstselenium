@@ -1,3 +1,4 @@
+using firstselenium.Pages;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -147,6 +148,22 @@ namespace firstselenium
             var selectedOptions = SeleniumCustomMethods.GetAllSelectedListItems(driver, By.Id("dropdown"));
             selectedOptions.ForEach(Console.WriteLine);
 
+        }
+
+        [Test]
+        public void TestWithPOM()
+        {
+            // Sudo code for setting up selenium
+            // 1. Create a new instance of selenium web driver
+            IWebDriver driver = new ChromeDriver();
+            // 2. Maximize the chrome window
+            driver.Manage().Window.Maximize();
+            // 3. Navigate to the URL
+            driver.Navigate().GoToUrl("http:/eaapp.somee.com/");
+            // POM initalization
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.ClickLogin();
+            loginPage.Login("admin","password");
         }
     }
 }
