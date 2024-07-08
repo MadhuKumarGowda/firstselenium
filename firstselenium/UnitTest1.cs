@@ -145,6 +145,7 @@ namespace firstselenium
             string []multiOptions = { "multi 1", "multi 2" };
             SeleniumCustomMethods.MultiSelectElements(driver, By.Id("dropdown"), multiOptions);
             var selectedOptions = SeleniumCustomMethods.GetAllSelectedListItems(driver, By.Id("dropdown"));
+            selectedOptions.ForEach(Console.WriteLine);
 
         }
     }
