@@ -21,13 +21,27 @@ namespace firstselenium.Pages
             LoginLink.Click();
         }
 
+        // Invoking click event using custom method
+        public void ClickCusotmLogin()
+        {
+            SeleniumCustomMethodPOM.Click(LoginLink);
+        }
+
         public void Login(string username, string password)
         {
             txtUsername.SendKeys(username);
             txtPassword.SendKeys(password);
             btnLogin.Submit();
         }
-                
+
+        // Invoking Submit operation using cusomt methods
+        public void CusomtLogin(string username, string password)
+        {
+            SeleniumCustomMethodPOM.EnterText(txtUsername, username);
+            SeleniumCustomMethodPOM.EnterText(txtPassword, password);
+            SeleniumCustomMethodPOM.Submit(btnLogin);
+        }
+
 
 
     }
