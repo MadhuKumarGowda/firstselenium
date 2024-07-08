@@ -181,5 +181,21 @@ namespace firstselenium
             loginPage.ClickCusotmLogin();
             loginPage.CusomtLogin("admin", "password");
         }
+
+        [Test]
+        public void TestWithPOMCusotmExtendMethods()
+        {
+            // Sudo code for setting up selenium
+            // 1. Create a new instance of selenium web driver
+            IWebDriver driver = new ChromeDriver();
+            // 2. Maximize the chrome window
+            driver.Manage().Window.Maximize();
+            // 3. Navigate to the URL
+            driver.Navigate().GoToUrl("http:/eaapp.somee.com/");
+            // POM initalization
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.ClickExtendLogin();
+            loginPage.CustomExtendLogin("admin", "password");
+        }
     }
 }

@@ -27,6 +27,11 @@ namespace firstselenium.Pages
             SeleniumCustomMethodPOM.Click(LoginLink);
         }
 
+        public void ClickExtendLogin()
+        {
+            LoginLink.Click();
+        }
+
         public void Login(string username, string password)
         {
             txtUsername.SendKeys(username);
@@ -40,6 +45,14 @@ namespace firstselenium.Pages
             SeleniumCustomMethodPOM.EnterText(txtUsername, username);
             SeleniumCustomMethodPOM.EnterText(txtPassword, password);
             SeleniumCustomMethodPOM.Submit(btnLogin);
+        }
+
+        // Invoking Submit operation using cusomt methods
+        public void CustomExtendLogin(string username, string password)
+        {
+            txtUsername.EnterText(username);
+            txtPassword.EnterText(password);
+            btnLogin.Submit();
         }
 
 
