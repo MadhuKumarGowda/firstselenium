@@ -10,6 +10,7 @@ namespace firstselenium
         [SetUp]
         public void Setup()
         {
+
         }
 
         [Test]
@@ -196,6 +197,12 @@ namespace firstselenium
             LoginPage loginPage = new LoginPage(driver);
             loginPage.ClickExtendLogin();
             loginPage.CustomExtendLogin("admin", "password");
+        }
+
+        [Test]
+        public void Test4()
+        {
+
         }
     }
 }
