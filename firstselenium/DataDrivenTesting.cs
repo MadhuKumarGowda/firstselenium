@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace firstselenium
 {
@@ -23,6 +24,7 @@ namespace firstselenium
 
         [Test]
         [Category("ddt")]
+        // Reading data from Login method as input
         [TestCaseSource(nameof(Login))]
         public void TestWithData(LoginModel loginmodel)
         {
@@ -33,6 +35,8 @@ namespace firstselenium
             loginPage.Login(loginmodel.username, loginmodel.password);
         }
 
+        // Yield return fresh input value everytime
+        // We can multiple test with different set of inputs
         public static IEnumerable<LoginModel> Login()
         {
             // Test1 with one set of inputs
@@ -43,15 +47,93 @@ namespace firstselenium
             };
 
             // Test2 with one set of inputs
-            yield return new LoginModel()
-            {
-                username = "admin",
-                password = "password123",
-            };
+            //yield return new LoginModel()
+            //{
+            //    username = "admin",
+            //    password = "password123",
+            //};
         }
-       
 
-        [OneTimeTearDown]
+        // Test with input values from reading json file
+        [Test]
+        [Category("ddt")]
+        [TestCaseSource(nameof(LoginJsonDataSource))]
+        public void TestWithDataJsonSource(LoginModel loginmodel)
+        {
+
+            // POM initalization
+            LoginPage loginPage = new LoginPage(_driver);
+            loginPage.ClickLogin();
+            loginPage.Login(loginmodel.username, loginmodel.password);
+        }
+
+        // Method to read json file and return to TEST
+        public static IEnumerable<LoginModel> LoginJsonDataSource()
+        {
+            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login.json");
+            var jsonString = File.ReadAllText(jsonFilePath);
+
+            var loginModel = JsonSerializer.Deserialize<LoginModel>(jsonString);
+
+            yield return loginModel;
+        }
+
+
+        [Test]
+        [Category("ddt")]
+        [TestCaseSource(nameof(LoginMultiData))]
+        public void TestWithMoreJsonSource(LoginModel loginmodel)
+        {
+
+            // POM initalization
+            LoginPage loginPage = new LoginPage(_driver);
+            loginPage.ClickLogin();
+            loginPage.Login(loginmodel.username, loginmodel.password);
+        }
+
+        // Reading multiple set of inputs for login from json
+        // Test wille execute as many set of data provied in json file
+        public static IEnumerable<LoginModel> LoginMultiData()
+        {
+            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logins.json");
+            var jsonString = File.ReadAllText(jsonFilePath);
+
+            var loginModel = JsonSerializer.Deserialize<List<LoginModel>>(jsonString);
+
+            foreach(var loginData in loginModel)
+            yield return loginData;
+        }
+
+        [Test]
+        [Category("ddt")]
+        
+        public void TestWithJsonData()
+        {
+            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login.json");
+            var jsonString = File.ReadAllText(jsonFilePath);
+
+            var loginModel = JsonSerializer.Deserialize<LoginModel>(jsonString);
+
+            // POM initalization
+            LoginPage loginPage = new LoginPage(_driver);
+            loginPage.ClickLogin();
+            loginPage.Login(loginModel.username, loginModel.password);
+        }
+
+        // Reading single value from json
+        private void ReadJsonFile()
+        {
+            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login.json");
+            var jsonString = File.ReadAllText(jsonFilePath);
+
+            var loginModel = JsonSerializer.Deserialize<LoginModel>(jsonString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+
+
+        [TearDown]
         public void TearDown()
         {
             _driver.Quit();
