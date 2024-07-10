@@ -1,18 +1,13 @@
 ﻿using firstselenium.Pages;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium.Chrome;
 using System.Text.Json;
 
 namespace firstselenium
 {
     public class DataDrivenTesting
     {
-        private IWebDriver _driver;   
+        private IWebDriver _driver;
 
         [SetUp]
         public void SetUp()
@@ -100,13 +95,13 @@ namespace firstselenium
 
             var loginModel = JsonSerializer.Deserialize<List<LoginModel>>(jsonString);
 
-            foreach(var loginData in loginModel)
-            yield return loginData;
+            foreach (var loginData in loginModel)
+                yield return loginData;
         }
 
         [Test]
         [Category("ddt")]
-        
+
         public void TestWithJsonData()
         {
             string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login.json");
@@ -126,12 +121,34 @@ namespace firstselenium
             string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login.json");
             var jsonString = File.ReadAllText(jsonFilePath);
 
+            // Last option is to set ignopre the case senstive of the json data
             var loginModel = JsonSerializer.Deserialize<LoginModel>(jsonString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
         }
 
+        // Better test appraches is Arrange, Act and Assert
+        // Arrange require page with require environements
+        // Act is to perform action on web page to get the result
+        // Assertion is to validate the result of ACT
+        [Test]
+        [Category("ddt")]
+        // Reading data from Login method as input
+        [TestCaseSource(nameof(Login))]
+        public void TestWithAssertion(LoginModel loginmodel)
+        {
+
+            // POM initalization
+            // Arrange
+            LoginPage loginPage = new LoginPage(_driver);
+            loginPage.ClickLogin();
+            loginPage.Login(loginmodel.username, loginmodel.password);
+
+            // Assertion
+            var isLoggedIn = loginPage.isLoggedIn();
+            Assert.IsTrue(isLoggedIn);
+        }
 
         [TearDown]
         public void TearDown()

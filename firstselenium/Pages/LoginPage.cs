@@ -16,6 +16,10 @@ namespace firstselenium.Pages
         IWebElement txtPassword => driver.FindElement(By.Id("Password"));
         IWebElement btnLogin => driver.FindElement(By.ClassName("btn"));
 
+        IWebElement LnkEmpDetails => driver.FindElement(By.LinkText("Employee Details"));
+        IWebElement LnkManageUsers => driver.FindElement(By.LinkText("Manage Users"));
+        IWebElement LnkLogOff => driver.FindElement(By.LinkText("Log off"));
+
         public void ClickLogin()
         {
             LoginLink.Click();
@@ -53,6 +57,11 @@ namespace firstselenium.Pages
             txtUsername.EnterText(username);
             txtPassword.EnterText(password);
             btnLogin.Submit();
+        }
+
+        public bool isLoggedIn()
+        {
+            return LnkEmpDetails.Displayed;
         }
 
 
